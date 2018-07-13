@@ -42,6 +42,14 @@ class strings{
 		else cout<<"Not Found";
 
 	}
+	void extract(strings s,int i,int l){
+		int j=0;
+		while(j<l){
+			string[j] = s.string[i+j];
+			j++;
+		}
+		string[j] = '\0';
+	}
 	int length(){
 		int i,count=0;
 		for( i=0;string[i]!='\0';i++){
@@ -118,15 +126,14 @@ int main()
 				break;
 			case 4:
 
+				int start,lent;
+				cout<<"Enter string, starting position, length";
+				cin>>str1>>start>>lent;
 				
-				cout<<"Enter two strings";
-				cin>>str1>>str2;
-				cout<<str1<<endl<<str2<<endl;
-				s1.copy(str1);
-				s2.copy(str2);
+				s2.copy(str1);
 				
-				s1.substring(s2);
-				
+				s1.extract(s2,start,lent);
+				s1.display();
 				break;
 
 		}
