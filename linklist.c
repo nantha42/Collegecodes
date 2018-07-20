@@ -55,6 +55,29 @@ struct employee *reverse(struct employee *a,struct employee *b){
 		return a;
 	}	
 }
+void reverse(int n){
+	struct employee *first;
+	struct employee *temp;
+	first = head;
+	int x;
+	for(;first!=NULL;){
+		temp = blockreverse(first,first->next,first,n);
+		head = temp;
+		
+	}
+}
+struct employee *blockreverse(struct employee *a,struct employee *b,struct employee *st,int n){
+	if(n == 0){
+		st->next = b;
+		st = a;
+		return a;
+	}
+	else{
+		struct employee *anext = blockreverse(b,b->next,st,n-1);
+		anext->next = a;
+		return a;
+	}
+}
 void crverse(){
 	printf("reversing the list");
 	struct employee *thead;
