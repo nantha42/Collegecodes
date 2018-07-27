@@ -64,44 +64,6 @@ void crverse(){
 	thead->next = NULL;
 }
 
-/*
-void blockreverse(int n){
-	int finished = 0;
-	struct employee *blockstart = head;
-	struct employee *previousblockend = NULL;
-
-	while(!finished){
-		int i = 0;
-		struct employee *a = NULL,*b = NULL,*c = NULL;
-		struct employee *temp = blockstart;
-		
-		c = NULL;
-		while(i<n-1 || temp != NULL){
-			i++;
-			a = temp;
-			b = temp->next;
-			a->next = c;
-			temp = b->next;
-			b->next = a;
-			c = b;
-		}
-		
-		if(head == blockstart){
-			head = c;
-			while(c->next!=NULL)
-				c= c->next;	
-			previousblockend = c;
-		}
-		else
-			previousblockend->next = c;
-
-		blockstart = temp;
-		previousblockend->next = blockstart;
-		if(temp==NULL)
-			finished = 1;
-
-	}
-}*/
 
 
 struct employee *blockreverse1(int n,struct employee *start){
@@ -123,9 +85,7 @@ struct employee *blockreverse1(int n,struct employee *start){
 			curr = temp;
 			i++;
 			
-
 		}
-	
 			firstbecomelast->next  = blockreverse1(n,curr);
 			return prev;
 	}
