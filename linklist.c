@@ -1,5 +1,7 @@
+//#include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
+//using namespace std;
 struct employee{
 	int empno;
 	char empname[20];
@@ -55,34 +57,79 @@ struct employee *reverse(struct employee *a,struct employee *b){
 		return a;
 	}	
 }
-void reverse(int n){
-	struct employee *first;
-	struct employee *temp;
-	first = head;
-	int x;
-	for(;first!=NULL;){
-		temp = blockreverse(first,first->next,first,n);
-		head = temp;
-		
-	}
-}
-struct employee *blockreverse(struct employee *a,struct employee *b,struct employee *st,int n){
-	if(n == 0){
-		st->next = b;
-		st = a;
-		return a;
-	}
-	else{
-		struct employee *anext = blockreverse(b,b->next,st,n-1);
-		anext->next = a;
-		return a;
-	}
-}
 void crverse(){
 	printf("reversing the list");
 	struct employee *thead;
 	thead = reverse(head,head->next);
 	thead->next = NULL;
+}
+
+/*
+void blockreverse(int n){
+	int finished = 0;
+	struct employee *blockstart = head;
+	struct employee *previousblockend = NULL;
+
+	while(!finished){
+		int i = 0;
+		struct employee *a = NULL,*b = NULL,*c = NULL;
+		struct employee *temp = blockstart;
+		
+		c = NULL;
+		while(i<n-1 || temp != NULL){
+			i++;
+			a = temp;
+			b = temp->next;
+			a->next = c;
+			temp = b->next;
+			b->next = a;
+			c = b;
+		}
+		
+		if(head == blockstart){
+			head = c;
+			while(c->next!=NULL)
+				c= c->next;	
+			previousblockend = c;
+		}
+		else
+			previousblockend->next = c;
+
+		blockstart = temp;
+		previousblockend->next = blockstart;
+		if(temp==NULL)
+			finished = 1;
+
+	}
+}*/
+
+
+struct employee *blockreverse1(int n,struct employee *start){
+	
+	if(start!=NULL){
+		int i = 0;
+		printf("Condition reached");
+		
+		struct employee *prev = NULL,*curr;
+		curr = start;//changes over time
+		struct employee *temp;
+		struct employee *firstbecomelast = start;//remains constant in each function call
+	
+		while(i<n && curr!=NULL){
+			printf("\ncurrent %d",curr->salary);
+			temp = curr->next;
+			curr->next = prev;
+			prev = curr;
+			curr = temp;
+			i++;
+			
+
+		}
+	
+			firstbecomelast->next  = blockreverse1(n,curr);
+			return prev;
+	}
+	else return NULL;
 }
 void bubblesort(){
 	struct employee *stop;
@@ -126,12 +173,13 @@ void display(){
 				
 	}
 }
-void main(int argc,char *argv[])
+int main(int argc,char *argv[])
 {
 	
 	int y;
+	int len;
 	do{
-		printf("1.insert 2.bubblesort 3.display 4.creverse 5.nonrecursive 0.quit");
+		printf("1.insert 2.bubblesort 3.display 4.creverse 5.nonrecursive 6.blockreverse 0.quit");
 		scanf("%d",&y);
 		switch(y)
 		{
@@ -140,6 +188,11 @@ void main(int argc,char *argv[])
 			case 3:display();break;
 			case 4:crverse();break;
 			case 5:nonrecursive();break;
+			case 6:
+				printf("Block Length:");
+				scanf("%d",&len);
+				head = blockreverse1(len,head);
+				break;
 
 		}	
 	}while(y);
