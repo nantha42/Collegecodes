@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <math.h>
 using namespace std;
 class account{
 	protected:
@@ -7,11 +8,12 @@ class account{
 		char accno[3];
 		char actype;
 		float balance;
-		
+		float rate;	
 	public:
 		static int acount;
 		
 	public:
+		
 	account(char ta)
 	{
 		cout<<"Enter name:";
@@ -25,6 +27,8 @@ class savings: public account
 {
 	
 	int minbal;
+	
+
 	static int count;
 		
 	public:
@@ -35,6 +39,7 @@ class savings: public account
 		accno[1] = 48+(count/10);
 		accno[2] = 48+(count%10);		
 		cout<<accno;
+		rate = .12;
 		balance = minbal = 500;
 	}
 	void withdraw(int amt)
@@ -57,7 +62,16 @@ class savings: public account
 		
 		cout<<name<<" "<<accno<<" "<<actype<<" "<<balance<<endl;
 	}
-	
+	void calinteret(){
+
+		float n,year;
+		cout<<"Enter number of times interest is compounded per year";
+		cin>>n;
+		cout<<"Enter year";
+		cin>>year;
+		cout<<endl<<rate/n;
+		balance = balance + balance*pow((rate/n),n*year);
+	}
 };
 class current:public account
 {
@@ -92,6 +106,17 @@ class current:public account
 		balance += amt;
 		cout<<"Your Current balance is "<<balance<<endl;
 	}
+
+	void calinteret(){
+		int n,year;
+		cout<<"Enter number of times interest is compounded per year";
+		cin>>n;
+		cout<<"Enter year";
+		cin>>year;
+		cout<<endl<<rate/n;
+		cout<<balance*pow(((float)rate/n),n*year);
+		this->balance = balance + balance*pow((rate/n),n*year);
+	}
 };
 int account::acount = 0;
 int savings::count =0;
@@ -103,7 +128,8 @@ int main(){
 	int t=1,index;
 	char ac[3];
 	int amt;
-	cout<<"1.create Saving 2.create Current 3.depsit 4.withdraw 5.display 6.minbalance";
+	int rate;
+	cout<<"1.create Saving 2.create Current 3.depsit 4.withdraw 5.display 6.minbalance 7.Interest";
 
 	while(t){
 		cout<<"\nEnter choice";
@@ -155,17 +181,36 @@ int main(){
 				cout<<"Enter account number";
 				cin>>ac;
 
-				if(ac[0]=='s')
+				if(ac[0]=='s'){
+					index = (ac[1]-48)*10+(ac[2]-48)-1;
+					cout<<"Index"<<index;
 					s_accounts[index]->showdetails();
-				else 
+				}
+				else{
+					index = (ac[1]-48)*10+(ac[2]-48)-1;
+					cout<<"Index"<<index; 
 					c_accounts[index]->showdetails();
+				}
 				break;
 			case 6:
 				for(int i=0;i<s_accounts.size();i++)
 					s_accounts[i]->showdetails();
 				for(int i=0;i<c_accounts.size();i++)
 					c_accounts[i]->showdetails();
-
+				break;
+			case 7:
+				cout<<"Enter account number";
+				cin>>ac;
+				if(ac[0]=='s'){
+					index = (ac[1]-48)*10+(ac[2]-48)-1;
+					cout<<"Index"<<index; 
+					s_accounts[index]->calinteret();
+				}
+				else{ 
+					index = (ac[1]-48)*10+(ac[2]-48)-1;
+					cout<<"Index"<<index; 
+					c_accounts[index]->calinteret();
+				}
 		}
 	}
 	
