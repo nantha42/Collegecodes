@@ -1,7 +1,6 @@
 #include <iostream>
 #include <vector>
 using namespace std;
-
 class account{
 	protected:
 		char name[20];
@@ -24,7 +23,7 @@ class account{
 
 class savings: public account
 {
-	int a;
+	
 	int minbal;
 	static int count;
 		
@@ -36,13 +35,10 @@ class savings: public account
 		accno[1] = 48+(count/10);
 		accno[2] = 48+(count%10);		
 		cout<<accno;
-		balance = minbal;
+		balance = minbal = 500;
 	}
-	void withdraw()
+	void withdraw(int amt)
 	{
-		int amt;
-		cout<<endl<<"Enter the amount you want to withdraw";
-		cin>>amt;
 		if(balance-minbal>=amt){
 			balance -= amt;
 		}
@@ -50,13 +46,16 @@ class savings: public account
 			cout<<"Not sufficient balance to withdraw"<<endl;
 		}
 	}
-	void deposit(){
-		int amt;
-		cout<<endl<<"Enter the amout you want to deposit";
-		cin>>amt;
+	void deposit(int amt){
 		
-//		balance += amt;
-//		cout<<"Your Current balance is "<<balance<<endl;
+		
+		balance += amt;
+		cout<<"Your Current balance is "<<balance<<endl;
+	}
+
+	void showdetails(){
+		
+		cout<<name<<" "<<accno<<" "<<actype<<" "<<balance<<endl;
 	}
 	
 };
@@ -64,22 +63,24 @@ class current:public account
 {
 	static int count;
 	int minbal;
+	
 	public:
 	current():account('c'){
 		count++;
-		balance = minbal = 500;
+		
 		accno[0] = 'c';
 		accno[1] = 48+(count/10);
 		accno[2] = 48+(count%10);
 		cout<<accno;
-		
+		balance = minbal = 500;
 	}
-	
-	void withdraw()
+	void showdetails(){
+
+		cout<<name<<" "<<accno<<" "<<actype<<" "<<balance<<endl;
+	}
+	void withdraw(int amt)
 	{
-		int amt;
-		cout<<endl<<"Enter the amount you want to withdraw";
-		cin>>amt;
+		
 		if(balance>=amt){
 			balance -= amt;
 		}
@@ -87,10 +88,7 @@ class current:public account
 			cout<<"Not sufficient balance to withdraw"<<endl;
 		}
 	}
-	void deposit(){
-		int amt;
-		cout<<endl<<"Enter the amout you want to deposit";
-		cin>>amt;
+	void deposit(int amt){
 		balance += amt;
 		cout<<"Your Current balance is "<<balance<<endl;
 	}
@@ -98,12 +96,15 @@ class current:public account
 int account::acount = 0;
 int savings::count =0;
 int current::count =0;
+
 int main(){
 	std::vector<savings*> s_accounts;
 	std::vector<current*> c_accounts;
 	int t=1,index;
-					char ac[3];
+	char ac[3];
+	int amt;
 	cout<<"1.create Saving 2.create Current 3.depsit 4.withdraw 5.display 6.minbalance";
+
 	while(t){
 		cout<<"\nEnter choice";
 		cin>>t;
@@ -116,37 +117,54 @@ int main(){
 			case 2:
 				c_accounts.push_back(new current());
 				break;
+
 			case 3:
-				
 				cout<<"Enter account number";
 				cin>>ac;
+				cout<<"Enter amount:";
+				cin>>amt;
 				if(ac[0]=='s'){
-					index = (ac[1]-48)*10+(ac[2]-48);
+					index = (ac[1]-48)*10+(ac[2]-48)-1;
 					cout<<"Index"<<index;
-					s_accounts[index]->deposit();
+					s_accounts[index]->deposit(amt);
 				}
 				else{
-					index = (ac[1]-48)*10+(ac[2]-48);
-					c_accounts[index]->deposit();
+					index = (ac[1]-48)*10+(ac[2]-48)-1;
+					cout<<"Index"<<index;
+					c_accounts[index]->deposit(amt);
 				} 	
 				break;
 			case 4:
 
 				cout<<"Enter account number";
 				cin>>ac;
+				cout<<"Enter amount:";
+				cin>>amt;
 				if(ac[0]=='s'){
-					index = (ac[1]-48)*10+(ac[2]-48);
-					
-					s_accounts[index]->withdraw();
+					index = (ac[1]-48)*10+(ac[2]-48)-1;
+					cout<<"Index"<<index;
+					s_accounts[index]->withdraw(amt);
 				}
 				else{
-					index = (ac[1]-48)*10+(ac[2]-48);
-					cout<<index;
-					c_accounts[index]->withdraw();
+					index = (ac[1]-48)*10+(ac[2]-48)-1;
+					cout<<"Index"<<index;
+					c_accounts[index]->withdraw(amt);
 				} 	
+				break;				
+			case 5:
+				cout<<"Enter account number";
+				cin>>ac;
+
+				if(ac[0]=='s')
+					s_accounts[index]->showdetails();
+				else 
+					c_accounts[index]->showdetails();
 				break;
-				
-				
+			case 6:
+				for(int i=0;i<s_accounts.size();i++)
+					s_accounts[i]->showdetails();
+				for(int i=0;i<c_accounts.size();i++)
+					c_accounts[i]->showdetails();
 
 		}
 	}
