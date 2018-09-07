@@ -23,6 +23,7 @@ class Tree{
 			
 			return t;	
 		}
+		
 		node* pfindmin(node *t){
 			node *temp = t;
 			while(temp->left!=NULL)
@@ -30,7 +31,7 @@ class Tree{
 			return temp;
 			
 		}
-		
+	
 		void ppostorder(node *t){
 			if(t!=NULL){
 			ppostorder(t->left);
@@ -55,16 +56,16 @@ class Tree{
 			}
 		}
 
-		node* pdelete(T x,node *t){
+		node* ldelete(T x,node *t){
 			if(t==NULL){
 				cout<<"Element no found";
 				return NULL;
 			}
 			else if(x<t->data){
-				t->left = pdelete(x,t->left);
+				t->left = ldelete(x,t->left);
 			}
 			else if(x>t->data)
-				t->right = pdelete(x,t->right);
+				t->right = ldelete(x,t->right);
 			else{
 			
 				if(t->left == NULL){
@@ -79,11 +80,45 @@ class Tree{
 				}
 				node *temp = pfindmin(t->right);
 				t->data = temp->data;	
-				t->right = pdelete(t->data,t->right);
+				t->right = ldelete(t->data,t->right);
 			}       
 		 return t;
 		}
+		node * pfindmax(node *t){
+			node *temp = t;
+			while(temp->right != NULL)
+				temp  = temp->right;
+			return temp;
+		}
 		
+		node* rdelete(T x,node *t){
+			if(t==NULL){
+				cout<<"Element not found";
+				return NULL;
+			}
+			else if(x<t->data){
+				t->left = rdelete(x,t->left);
+			}
+			else if(x>t->data)
+				t->right = rdelete(x,t->right);
+			else{
+			
+				if(t->left == NULL){
+					node *temp = t->right;
+					delete t;			
+					return temp;
+				}
+				else if(t->right == NULL){
+					node *temp = t->left;
+					delete t;
+					return temp;
+				}
+				node *temp = pfindmax(t->left);
+				t->data = temp->data;	
+				t->left = ldelete(t->data,t->left);
+			}       
+		 return t;
+		}
 		
 	public:
 	
@@ -104,18 +139,44 @@ class Tree{
 			ppostorder(tree);
 		}
 		void tdelete(T x){
-			tree = pdelete(x,tree);
+			tree = ldelete(x,tree);
+		}
+		void jdelete(T x){
+			tree = rdelete(x,tree);
 		}		
 		
 };
 int main(){
-	Tree<string> t;
-	t.insert("nanthak"); 
-	t.insert("nagthak");	
-	t.inorder();
-	t.tdelete("nanthak");
-	t.inorder();
+	Tree<int> t;
+	int x=1,a;
 	
+	while(x){
+		cout<<"1.Insert 2.Delete 3.Preorder 4.Inorder 5.PostOrder";
+		cin>>x;
+		switch(x){
+			case 1:
+		
+				cout<<"Enter a number";
+				cin>>a;
+				t.insert(a);
+				break;
+			case 2:
+				cout<<"Enter a number";
+				cin>>a;
+				t.tdelete(a);
+				break;
+			case 3:
+				t.preorder();
+				break;
+			case 4:
+				t.inorder();
+				break;
+			case 5:
+				t.postorder();
+				break;		
+				
+		}
+	}		
 }
 
 
